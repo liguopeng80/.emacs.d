@@ -1,0 +1,29 @@
+<!-- Page published by Emacs Muse ends here -->
+    <div class="navfoot">
+      <hr>
+      <table summary="Footer navigation" width="100%" border="0" >
+        <col width="33%"><col width="34%" ><col width="33%" >
+		<tbody>
+          <tr>
+			<td align="left">
+			  <span class="footdate">
+				Updated:
+				<lisp>
+				  (format-time-string "%4Y-%2m-%2d-%T"
+				  (nth 5 (file-attributes
+				  muse-publishing-current-file)))
+				</lisp>
+
+				<python>
+				  import os
+				  print "hello python"
+				  os.listdir(".")[0]
+				</python>
+			</td>
+          </tr>
+        </tbody>
+      </table>
+	</div>
+  </body>
+</html>
+
