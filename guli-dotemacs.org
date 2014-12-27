@@ -631,33 +631,33 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 
 ** Python
 #+begin_src emacs-lisp
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (load-file "~/.emacs.d/emacs-for-python/epy-init.el")
-  ;; todo: remove the comment on MAC
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (load-file "~/.emacs.d/emacs-for-python/epy-init.el")
 
-  (add-to-list 'load-path "~/.emacs.d/emacs-for-python/") ;; tell where to load the various files
-  (require 'epy-setup)      ;; It will setup other loads, it is required!
-  ;; (require 'epy-python)     ;; If you want the python facilities [optional]
-  ;; (require 'epy-completion) ;; If you want the autocompletion settings [optional]
-  ;; (require 'epy-editing)    ;; For configurations related to editing [optional]
-  ;; (require 'epy-bindings)   ;; For my suggested keybindings [optional]
-  ;; (require 'epy-nose)       ;; For nose integration
+;; (add-to-list 'load-path "~/.emacs.d/emacs-for-python/") ;; tell where to load the various files
+;; (require 'epy-setup)      ;; It will setup other loads, it is required!
+;; (require 'epy-python)     ;; If you want the python facilities [optional]
+;; (require 'epy-completion) ;; If you want the autocompletion settings [optional]
+;; (require 'epy-editing)    ;; For configurations related to editing [optional]
+;; (require 'epy-bindings)   ;; For my suggested keybindings [optional]
+;; (require 'epy-nose)       ;; For nose integration
 
-  ; python auto indent
-  (add-hook 'python-mode-hook
-        '(lambda()
-           (local-set-key 
-            "\r" 
-            '(lambda()
-           (interactive)
-           (insert "\n")
-           (python-indent-line)))))
+; python auto indent
+(add-hook 'python-mode-hook
+      '(lambda()
+         (local-set-key
+          "\r"
+          '(lambda()
+         (interactive)
+         (insert "\n")
+         (python-indent-line)))))
 
-  ; indent python code with spaces
-  (add-hook 'python-mode-hook
-            '(lambda()
-               (setq indent-tabs-mode nil)))
+; indent python code with spaces
+(add-hook 'python-mode-hook
+          '(lambda()
+             (setq indent-tabs-mode nil)))
 
+;; (setq epy-enable-ropemacs nil)
 #+end_src
 
 ** C and C++
@@ -1154,6 +1154,20 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+end_src
 
 ** For windows
+
+#+begin_src emacs-lisp
+(defun cygwin-shell ()
+  "Run cygwin bash in shell mode."
+  (interactive)
+  (let ((explicit-shell-file-name "C:/bin/cygwin64/bin/bash"))
+    (call-interactively 'shell)))
+
+(when window-system
+  (setq explicit-shell-file-name "C:/bin/cygwin64/bin/bash")
+  (setq explicit-sh-args '("-login" "-i"))
+  )
+#+end_src
+
 ** Internet Relay Chat
    IRC is a great way to hang out with other Emacs geeks.
 #+begin_src emacs-lisp

@@ -48,7 +48,7 @@
 ;; win32 auto configuration, assuming that cygwin is installed at "c:/cygwin"
 (condition-case nil
     (when *win32*
-      (setq cygwin-mount-cygwin-bin-directory "c:/cygwin/bin")
+      (setq cygwin-mount-cygwin-bin-directory "c:/bin/cygwin64/bin")
       (require 'setup-cygwin)
       ;; better to set HOME env in GUI
       ;; (setenv "HOME" "c:/cygwin/home/someuser")
@@ -94,7 +94,7 @@
   (require 'init-org)
   (require 'init-org-mime))
 (require 'init-css)
-(require 'init-python-mode)
+;; (require 'init-python-mode)
 (require 'init-haskell)
 (require 'init-ruby-mode)
 (require 'init-lisp)
