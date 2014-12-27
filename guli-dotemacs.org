@@ -632,11 +632,11 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 ** Python
 #+begin_src emacs-lisp
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; (load-file (concat lgp-root "emacs-for-python/epy-init.el"))
+  (load-file "~/.emacs.d/emacs-for-python/epy-init.el")
   ;; todo: remove the comment on MAC
 
-  ;; (add-to-list 'load-path "/home/guli/software/emacs-for-python/") ;; tell where to load the various files
-  ;; (require 'epy-setup)      ;; It will setup other loads, it is required!
+  (add-to-list 'load-path "~/.emacs.d/emacs-for-python/") ;; tell where to load the various files
+  (require 'epy-setup)      ;; It will setup other loads, it is required!
   ;; (require 'epy-python)     ;; If you want the python facilities [optional]
   ;; (require 'epy-completion) ;; If you want the autocompletion settings [optional]
   ;; (require 'epy-editing)    ;; For configurations related to editing [optional]
