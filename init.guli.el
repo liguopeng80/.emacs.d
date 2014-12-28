@@ -44,5 +44,12 @@
 (org-babel-load-file user-customize-org-file)
 ;; (mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
 
+(setq-default initial-scratch-message
+              (concat ";; Happy hacking " (or user-login-name "") "!\n\n"
+                      ";; 积极主动；以使为终；要事第一；\n;; 双赢思维；知彼知己；综合踪效\n\n"
+                      ";; 士不可以不弘毅，任重而道远。\n"
+                      ";; 弘，宽广也。毅，强忍也。非弘不能胜其重，非毅无以致其远。\n"
+                      ";; 仁以为己任，不亦重乎？死而后已，不亦远乎？\n\n"
+                      ))
 
 ;;; init.el ends here

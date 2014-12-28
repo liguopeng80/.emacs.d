@@ -895,7 +895,7 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
   ;;  '(tabbar-unselected-face ((t (:inherit tabbar-default-face :foreground "#102e4e" :box (:line-width 2 :color "white" :style pressed-button))))))
 #+end_src
 
-* Folding                                                               :tbd:
+* Folding
 #+begin_src emacs-lisp
   (autoload 'folding-mode "folding" 
     "Minor mode that simulates a folding editor" t) 
@@ -933,7 +933,10 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 (setq org-default-notes-file "~/private/org/notes.org")
 
 ;; show which events should be listed in agenda view
-(setq org-agenda-files (list "~/private/org/todo/todo-work.org"))
+(setq org-agenda-files
+      (list "~/private/org/todo/todo-work.org"
+            "~/private/org/todo/todo-personal.org"
+            ))
 #+end_src
 
 ** After load
@@ -959,6 +962,7 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+end_src
 ** Task and agenda
 #+begin_src emacs-lisp
+(setq calendar-week-start-day 1)
 (setq org-clock-persist t)
 (org-clock-persistence-insinuate)
 
@@ -1047,26 +1051,18 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 (setq org-capture-templates
       '(
         ;; todo list, GTD
-        ("t" "Todo" entry (file+headline "~/private/org/todo/todo-work.org" "Tasks")  "* TODO %^{topic} %^g\nAdded: %U\n\n%?\n")
-        ("p" "Personal" entry (file+headline "~/private/org/todo/todo-personal.org" "Ongoing")  "* TODO %^{topic} %^g\nAdded: %U\n\n%?\n")
-        ("r" "Review" entry (file+headline "~/private/org/todo/todo-work.org" "WORK")
-         "* TODO %^{topic} %u %^greview:\nAdded: %U\n%[~/.emacs.d/conf/org/codereview.txt]\n")
-        ;; Reviews and Journanl
-        ("a" "Daily Review" entry (file+headline "~/private/org/notes/review.org" "Daily Report")
-         "* daily review %U :Daily: \n%[~/.emacs.d/conf/org/dailyreport.txt]\n" )
-        ("j" "Journal" entry (file+headline "~/private/org/notes/journal.org" "Journal")  "* %^{Title}\n %i\n %a")
+        ("t" "Todo (work)" entry (file+datetree "~/private/org/todo/todo-work.org")  "* TODO %^{topic} :work:%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
+        ("p" "Todo (Personal)" entry (file+datetree "~/private/org/todo/todo-personal.org")  "* TODO %^{topic} :personal:%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
 
-        ;; work environment, for example: ip address, server address, etc.
-        ("e" "Environment" entry (file+headline "~/private/org/todo/todo-work.org" "Environment")  "* %^{topic} %u %^gEnvironment:\n%?\n")
-        ("q" "Question" entry (file+headline "~/private/org/todo/todo-work.org" "Question")  "* %^{topic} %u %^gquestion:\n%?")
+        ;; Reviews and Journanl
+        ("r" "Daily Review" entry (file+datetree "~/private/org/notes/review.org") "Daily Report :review:"
+         "* daily review %U :Daily: \n%[~/.emacs.d/conf/org/dailyreport.txt]\n"  :prepend t :empty-lines 1)
+        ("j" "Journal" entry (file+datetree "~/private/org/notes/journal.org")  "* %U - %^{Title} :journal:\n %i\n %a" :empty-lines 1)
+        ("l" "Log Time" entry (file+datetree "~/private/org/notes/timelog.org")  "* %U - %^{Title} :time:")
 
         ;; notes for study, management, ideas
         ("n" "Notes" entry (file+headline "~/private/org/notes/notes.org" "Notes")  "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
-        ("i" "Idea" entry (file+headline "~/private/org/notes/notes.org" "New Ideas")  "* %^{Title} %u %^g\n%i\n ")
-        ("m" "Management" entry (file+headline "~/private/org/notes/notes.management.org" "Management")  "* %^{topic} %u %^g\n%?\n")
-
-        ("w" "Idea" entry (file+headline "~/private/org/english.org" "Words")  "* %^{Title}")
-        ("h" "Home Work" entry (file+headline "~/private/org/home/hongyi.org" "Notes")  "* %^{Title} %u %^g\n%i")
+        ("m" "Management" entry (file+headline "~/private/org/notes/notes.management.org" "Management")  "* %^{topic} %u :manage:%^g\n%?\n" :prepend t :empty-lines 1)
         ))
 #+end_src
 
@@ -1109,10 +1105,53 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
       '(("TODO"      . org-warning)
         ("DEFERRED"  . shadow)
         ("CANCELLED"  . (:foreground "green"))))
-
-
 #+end_src
 
+** Font in agenda
+
+#+begin_src emacs-lisp
+(add-hook 'org-finalize-agenda-hook
+          (lambda ()
+            (save-excursion
+              (color-org-header "personal:"  "green")
+              (color-org-header "birthdays:" "gold")
+              (color-org-header "work:"      "orange"))))
+#+end_src
+
+** Holidays
+#+begin_src emacs-lisp
+(setq christian-holidays nil)
+(setq hebrew-holidays  nil)
+(setq islamic-holidays nil)
+
+(setq general-holidays
+      '((holiday-fixed 1 1 "元旦")
+        (holiday-fixed 2 14 "情人节")
+        (holiday-fixed 3 14 "白色情人节")
+        (holiday-fixed 4 1 "愚人节")
+        (holiday-fixed 5 1 "劳动节")
+        (holiday-float 5 0 2 "母亲节")
+        (holiday-fixed 6 1 "儿童节")
+        (holiday-float 6 0 3 "父亲节")
+        (holiday-fixed 7 1 "建党节")
+        (holiday-fixed 8 1 "建军节")
+        (holiday-fixed 9 10 "教师节")
+        (holiday-fixed 10 1 "国庆节")
+        (holiday-fixed 12 25 "圣诞节")))
+
+(setq local-holidays
+      '(;; 农历节日
+        (holiday-chinese 1 1 "春节")
+        (holiday-chinese 1 2 "春节")
+        (holiday-chinese 1 3 "春节")
+        (holiday-chinese-qingming)
+        (holiday-chinese 5 5 "端午节")
+        (holiday-chinese 8 15 "中秋节")
+        ))
+
+(setq calendar-holidays
+      (append general-holidays local-holidays))
+#+end_src
 ** Encoding
 #+begin_src emacs-lisp
 (require 'org)

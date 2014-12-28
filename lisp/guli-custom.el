@@ -6,7 +6,8 @@
  '(bmkp-last-as-first-bookmark-file "~/.bookmarks.el")
  '(safe-local-variable-values
    (quote
-    ((eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook"
+    ((no-byte-compile t)
+     (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook"
            (add-hook
             (quote write-contents-functions)
             (lambda nil

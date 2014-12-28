@@ -380,10 +380,9 @@ point reaches the beginning or end of the buffer, stop there."
 ; (global-set-key [(control tab)] 'next-buffer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (load-file (concat lgp-root "emacs-for-python/epy-init.el"))
-;; todo: remove the comment on MAC
+;; (load-file "~/.emacs.d/emacs-for-python/epy-init.el")
 
-;; (add-to-list 'load-path "/home/guli/software/emacs-for-python/") ;; tell where to load the various files
+;; (add-to-list 'load-path "~/.emacs.d/emacs-for-python/") ;; tell where to load the various files
 ;; (require 'epy-setup)      ;; It will setup other loads, it is required!
 ;; (require 'epy-python)     ;; If you want the python facilities [optional]
 ;; (require 'epy-completion) ;; If you want the autocompletion settings [optional]
@@ -394,8 +393,8 @@ point reaches the beginning or end of the buffer, stop there."
 ; python auto indent
 (add-hook 'python-mode-hook
       '(lambda()
-         (local-set-key 
-          "\r" 
+         (local-set-key
+          "\r"
           '(lambda()
          (interactive)
          (insert "\n")
@@ -405,6 +404,8 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'python-mode-hook
           '(lambda()
              (setq indent-tabs-mode nil)))
+
+;; (setq epy-enable-ropemacs nil)
 
 ;; using c++-mode on .h files
 (setq auto-mode-alist (cons '("\\.hpp$" . c++-mode) auto-mode-alist))
@@ -629,7 +630,10 @@ point reaches the beginning or end of the buffer, stop there."
 (setq org-default-notes-file "~/private/org/notes.org")
 
 ;; show which events should be listed in agenda view
-(setq org-agenda-files (list "~/private/org/todo/todo-work.org"))
+(setq org-agenda-files
+      (list "~/private/org/todo/todo-work.org"
+            "~/private/org/todo/todo-personal.org"
+            ))
 
 (eval-after-load "org"
   ;; '(progn
@@ -728,26 +732,18 @@ point reaches the beginning or end of the buffer, stop there."
 (setq org-capture-templates
       '(
         ;; todo list, GTD
-        ("t" "Todo" entry (file+headline "~/private/org/todo/todo-work.org" "Tasks")  "* TODO %^{topic} %^g\nAdded: %U\n\n%?\n")
-        ("p" "Personal" entry (file+headline "~/private/org/todo/todo-personal.org" "Ongoing")  "* TODO %^{topic} %^g\nAdded: %U\n\n%?\n")
-        ("r" "Review" entry (file+headline "~/private/org/todo/todo-work.org" "WORK")
-         "* TODO %^{topic} %u %^greview:\nAdded: %U\n%[~/.emacs.d/conf/org/codereview.txt]\n")
-        ;; Reviews and Journanl
-        ("a" "Daily Review" entry (file+headline "~/private/org/notes/review.org" "Daily Report")
-         "* daily review %U :Daily: \n%[~/.emacs.d/conf/org/dailyreport.txt]\n" )
-        ("j" "Journal" entry (file+headline "~/private/org/notes/journal.org" "Journal")  "* %^{Title}\n %i\n %a")
+        ("t" "Todo (work)" entry (file+datetree "~/private/org/todo/todo-work.org")  "* TODO %^{topic} :work:%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
+        ("p" "Todo (Personal)" entry (file+datetree "~/private/org/todo/todo-personal.org")  "* TODO %^{topic} :personal:%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
 
-        ;; work environment, for example: ip address, server address, etc.
-        ("e" "Environment" entry (file+headline "~/private/org/todo/todo-work.org" "Environment")  "* %^{topic} %u %^gEnvironment:\n%?\n")
-        ("q" "Question" entry (file+headline "~/private/org/todo/todo-work.org" "Question")  "* %^{topic} %u %^gquestion:\n%?")
+        ;; Reviews and Journanl
+        ("r" "Daily Review" entry (file+datetree "~/private/org/notes/review.org") "Daily Report :review:"
+         "* daily review %U :Daily: \n%[~/.emacs.d/conf/org/dailyreport.txt]\n"  :prepend t :empty-lines 1)
+        ("j" "Journal" entry (file+datetree "~/private/org/notes/journal.org")  "* %U - %^{Title} :journal:\n %i\n %a" :empty-lines 1)
+        ("l" "Log Time" entry (file+datetree "~/private/org/notes/timelog.org")  "* %U - %^{Title} :time:")
 
         ;; notes for study, management, ideas
         ("n" "Notes" entry (file+headline "~/private/org/notes/notes.org" "Notes")  "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
-        ("i" "Idea" entry (file+headline "~/private/org/notes/notes.org" "New Ideas")  "* %^{Title} %u %^g\n%i\n ")
-        ("m" "Management" entry (file+headline "~/private/org/notes/notes.management.org" "Management")  "* %^{topic} %u %^g\n%?\n")
-
-        ("w" "Idea" entry (file+headline "~/private/org/english.org" "Words")  "* %^{Title}")
-        ("h" "Home Work" entry (file+headline "~/private/org/home/hongyi.org" "Notes")  "* %^{Title} %u %^g\n%i")
+        ("m" "Management" entry (file+headline "~/private/org/notes/notes.management.org" "Management")  "* %^{topic} %u :manage:%^g\n%?\n" :prepend t :empty-lines 1)
         ))
 
 (setq org-fontify-emphasized-text t)
@@ -767,6 +763,36 @@ point reaches the beginning or end of the buffer, stop there."
       '(("TODO"      . org-warning)
         ("DEFERRED"  . shadow)
         ("CANCELLED"  . (:foreground "green"))))
+
+(add-hook 'org-finalize-agenda-hook
+          (lambda ()
+            (save-excursion
+              (color-org-header "personal:"  "green")
+              (color-org-header "birthdays:" "gold")
+              (color-org-header "work:"      "orange"))))
+
+(setq general-holidays
+      '((holiday-fixed 1 1 "元旦")
+        (holiday-fixed 2 14 "情人节")
+        (holiday-fixed 3 14 "白色情人节")
+        (holiday-fixed 4 1 "愚人节")
+        (holiday-fixed 5 1 "劳动节")
+        (holiday-float 5 0 2 "母亲节")
+        (holiday-fixed 6 1 "儿童节")
+        (holiday-float 6 0 3 "父亲节")
+        (holiday-fixed 7 1 "建党节")
+        (holiday-fixed 8 1 "建军节")
+        (holiday-fixed 9 10 "教师节")
+        (holiday-fixed 10 1 "国庆节")
+        (holiday-fixed 12 25 "圣诞节")
+        ;; 农历节日
+        (holiday-chinese 1 1 "春节")
+        (holiday-chinese 1 2 "春节")
+        (holiday-chinese 1 3 "春节")
+        (holiday-chinese-qingming)
+        (holiday-chinese 5 5 "端午节")
+        (holiday-chinese 8 15 "中秋节")
+        ))
 
 (require 'org)
 
@@ -798,6 +824,17 @@ point reaches the beginning or end of the buffer, stop there."
              (let ((buffer "*Completions*"))
                (and (get-buffer buffer)
                     (kill-buffer buffer)))))
+
+(defun cygwin-shell ()
+  "Run cygwin bash in shell mode."
+  (interactive)
+  (let ((explicit-shell-file-name "C:/bin/cygwin64/bin/bash"))
+    (call-interactively 'shell)))
+
+(when window-system
+  (setq explicit-shell-file-name "C:/bin/cygwin64/bin/bash")
+  (setq explicit-sh-args '("-login" "-i"))
+  )
 
 (use-package erc
   :ensure erc
