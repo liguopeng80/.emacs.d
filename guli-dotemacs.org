@@ -69,7 +69,8 @@ after adding these for the first time.
 #+begin_src emacs-lisp
 (setq-default initial-scratch-message
               (concat ";; Happy hacking " (or user-login-name "") "!\n\n"
-                      ";; 积极主动；以始为终；要事第一；\n;; 双赢思维；知彼知己；综合踪效\n\n"
+                      ";; 积极主动；以终为始；要事第一；\n;; 双赢思维；知彼知己；综合综效。\n"
+                      ";; 重视自己的影响圈而不是关注圈。\n\n"
                       ";; 士不可以不弘毅，任重而道远。\n"
                       ";; 弘，宽广也。毅，强忍也。非弘不能胜其重，非毅无以致其远。\n"
                       ";; 仁以为己任，不亦重乎？死而后已，不亦远乎？\n\n"
@@ -736,32 +737,35 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 
 *** cscope
 #+begin_src emacs-lisp
-  (require 'xcscope)
+(require 'xcscope)
 
+(if *win32*
+    (setq cscope-program "c:/bin/cygwin32/local/bin/cscope")
+   (if *is-a-mac*
+       (setq cscope-program "/usr/local/Cellar/cscope/15.8a/bin/cscope")
+     (setq cscope-program "/usr/local/bin/cscope")))
 
-  (setq cscope-program "/usr/local/bin/cscope")
+(define-key global-map [(control f3)]  'cscope-set-initial-directory)
+(define-key global-map [(control meta f4)]  'lgp-switch-cscope-update-db-status)
+(define-key global-map [(control f5)]  'cscope-find-this-symbol)
+(define-key global-map [(control f6)]  'cscope-find-global-definition)
+(define-key global-map [(control f7)]  'cscope-find-global-definition-no-prompting)
+(define-key global-map [(control f8)]  'cscope-pop-mark)
+(define-key global-map [(control f9)]  'cscope-next-symbol)
+(define-key global-map [(control f10)] 'cscope-prev-symbol)
+(define-key global-map [(control f11)] 'cscope-next-file)
+(define-key global-map [(control f12)] 'cscope-prev-file)
+(define-key global-map [(meta f9)]     'cscope-display-buffer)
+(define-key global-map [(meta f10)]    'cscope-display-buffer-toggle)
 
-  (define-key global-map [(control f3)]  'cscope-set-initial-directory)
-  (define-key global-map [(control meta f4)]  'lgp-switch-cscope-update-db-status)
-  (define-key global-map [(control f5)]  'cscope-find-this-symbol)
-  (define-key global-map [(control f6)]  'cscope-find-global-definition)
-  (define-key global-map [(control f7)]  'cscope-find-global-definition-no-prompting)
-  (define-key global-map [(control f8)]  'cscope-pop-mark)
-  (define-key global-map [(control f9)]  'cscope-next-symbol)
-  (define-key global-map [(control f10)] 'cscope-prev-symbol)
-  (define-key global-map [(control f11)] 'cscope-next-file)
-  (define-key global-map [(control f12)] 'cscope-prev-file)
-  (define-key global-map [(meta f9)]     'cscope-display-buffer)
-  (define-key global-map [(meta f10)]    'cscope-display-buffer-toggle)
+(defun lgp-switch-cscope-update-db-status()
+  (interactive)
+  (if cscope-do-not-update-database
+      (setq cscope-do-not-update-database nil)
+    (setq cscope-do-not-update-database t)))
 
-  (defun lgp-switch-cscope-update-db-status()
-    (interactive)
-    (if cscope-do-not-update-database
-        (setq cscope-do-not-update-database nil)
-      (setq cscope-do-not-update-database t)))
-
-  ;; NOT update database automatically
-  (setq cscope-do-not-update-database t)
+;; NOT update database automatically
+(setq cscope-do-not-update-database t)
 #+end_src
 
 *** Doxygen
@@ -830,7 +834,7 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 ** Chinese
 #+begin_src emacs-lisp
   ;; (set-default-font "DejaVu Sans Mono")
-  (when window-system
+  (when *win32*
   ;;  (set-frame-font "Symbol-12")
     (set-fontset-font (frame-parameter nil 'font)
                       'han '("WenQuanYi Micro Hei" . "ISO10646-1"))
@@ -928,6 +932,7 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 ;(setq org-hide-leading-stars t)
 ;(setq org-reverse-note-order t)
 ;(setq org-tags-column -120)
+(setq org-startup-indented nil)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
@@ -1126,7 +1131,26 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+end_src
 
 ** Font in agenda
+   
 #+begin_src emacs-lisp
+
+(defun color-org-header (tag col)
+  ""
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward tag nil t)
+    (add-text-properties (match-beginning 0) (point-at-eol)
+                         `(face (:foreground ,col )  )))
+  (goto-char (point-min))
+  (while (re-search-forward "TODO" nil t)
+    (add-text-properties (match-beginning 0) (match-end 0)
+                         `(face (:box "red1" )  )))
+  (goto-char (point-min))
+  (while (re-search-forward "DONE" nil t)
+    (add-text-properties (match-beginning 0) (match-end 0)
+                         `(face (:strike-through "green" )  )))
+  )
+
 (add-hook 'org-finalize-agenda-hook
           (lambda ()
             (save-excursion
@@ -1184,7 +1208,21 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 (setq org-display-custom-times t)
 (setq org-time-stamp-custom-formats '("<%m/%d/%y>" . "<%m/%d/%y %a %H:%M>"))
 #+end_src
+** Chinese HTML spaces
+#+begin_src emacs-lisp
+(defadvice org-html-paragraph (before org-html-paragraph-advice
+                                      (paragraph contents info) activate)
+  "Join consecutive Chinese lines into a single long line without
+unwanted space when exporting org-mode to html."
+  (let* ((origin-contents (ad-get-arg 1))
+         (fix-regexp "[[:multibyte:]]")
+         (fixed-contents
+          (replace-regexp-in-string
+           (concat
+            "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
 
+    (ad-set-arg 1 fixed-contents)))
+#+end_src
 * Markdown
 #+begin_src emacs-lisp
   (autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t) 
@@ -1222,7 +1260,7 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
   (let ((explicit-shell-file-name "C:/bin/cygwin64/bin/bash"))
     (call-interactively 'shell)))
 
-(when window-system
+(when *win32*
   (setq explicit-shell-file-name "C:/bin/cygwin64/bin/bash")
   (setq explicit-sh-args '("-login" "-i"))
   )
@@ -1389,7 +1427,6 @@ And ace-jump-zap...
 * Path and ENV
 #+begin_src emacs-lisp
   (setenv "PATH" (concat "\"c:/program files/postgresql/9.3/bin;\"" (getenv "PATH")))
-
   (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 
   (if (equal system-type `darwin)    
