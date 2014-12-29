@@ -65,6 +65,17 @@ in a directory in my load-path=, Emacs can find them.
 Use =M-x package-refresh-contents= to reload the list of packages
 after adding these for the first time.
 
+*** Set scratch message
+#+begin_src emacs-lisp
+(setq-default initial-scratch-message
+              (concat ";; Happy hacking " (or user-login-name "") "!\n\n"
+                      ";; 积极主动；以始为终；要事第一；\n;; 双赢思维；知彼知己；综合踪效\n\n"
+                      ";; 士不可以不弘毅，任重而道远。\n"
+                      ";; 弘，宽广也。毅，强忍也。非弘不能胜其重，非毅无以致其远。\n"
+                      ";; 仁以为己任，不亦重乎？死而后已，不亦远乎？\n\n"
+                      ))
+#+end_src
+
 * General configuration
 ** Backups
 This is one of the things people usually want to change right away. By
@@ -1361,9 +1372,9 @@ And ace-jump-zap...
 #+end_src
 
 ** Startup
+   Show agenda is toooooo slow.... :-(
 #+begin_src emacs-lisp
-  ;; show agenda
-  (add-hook 'after-init-hook (lambda () (org-agenda nil "a")))
+  ;; (add-hook 'after-init-hook (lambda () (org-agenda nil "a")))
 #+end_src
 
 * Other cool configs you may want to check out
