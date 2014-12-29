@@ -449,6 +449,10 @@ Disk space is cheap. Save lots.
 brew install aspell
 #+end_src
    
+** Process query
+#+begin_src emacs-lisp
+ ;; (set-process-query-on-exit-flag ad-return-value nil)
+#+end_src
 ** Others
 #+begin_src emacs-lisp
   (put 'narrow-to-region 'disabled nil)
@@ -628,13 +632,17 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+end_src
 
 * Programming
-
 ** Python
 #+begin_src emacs-lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (load-file "~/.emacs.d/emacs-for-python/epy-init.el")
+;;; python mode
+(load-file "~/.emacs.d/emacs-for-python/epy-init.el")
 
-;; (add-to-list 'load-path "~/.emacs.d/emacs-for-python/") ;; tell where to load the various files
+;; (require 'pymacs)
+;; (pymacs-load "ropemacs" "rope-")
+
+;; If you want to enable them manually
+;; (add-to-list 'load-path "~/.emacs.d/emacs-for-python/")
 ;; (require 'epy-setup)      ;; It will setup other loads, it is required!
 ;; (require 'epy-python)     ;; If you want the python facilities [optional]
 ;; (require 'epy-completion) ;; If you want the autocompletion settings [optional]
@@ -657,7 +665,6 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
           '(lambda()
              (setq indent-tabs-mode nil)))
 
-;; (setq epy-enable-ropemacs nil)
 #+end_src
 
 ** C and C++
@@ -1057,8 +1064,8 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
         ;; Reviews and Journanl
         ("r" "Daily Review" entry (file+datetree "~/private/org/notes/review.org") "Daily Report :review:"
          "* daily review %U :Daily: \n%[~/.emacs.d/conf/org/dailyreport.txt]\n"  :prepend t :empty-lines 1)
-        ("j" "Journal" entry (file+datetree "~/private/org/notes/journal.org")  "* %U - %^{Title} :journal:\n %i\n %a" :empty-lines 1)
-        ("l" "Log Time" entry (file+datetree "~/private/org/notes/timelog.org")  "* %U - %^{Title} :time:")
+        ("j" "Journal" entry (file+datetree "~/private/org/notes/journal.org")  "* %U - %^{Title} :journal:\n %?" :empty-lines 1)
+        ("l" "Log Time" entry (file+datetree "~/private/org/notes/timelog.org")  "* %U - %^{Title} :time:\n%?")
 
         ;; notes for study, management, ideas
         ("n" "Notes" entry (file+headline "~/private/org/notes/notes.org" "Notes")  "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
@@ -1108,7 +1115,6 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+end_src
 
 ** Font in agenda
-
 #+begin_src emacs-lisp
 (add-hook 'org-finalize-agenda-hook
           (lambda ()

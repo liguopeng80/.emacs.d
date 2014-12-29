@@ -32,6 +32,7 @@
 (dolist (file (directory-files defuns-dir t "\\w+"))
   (when (file-regular-p file)
       (load file)))
+
 ;----------------------------------------------------------------------------
 ; Load configs for specific features and modes
 ;----------------------------------------------------------------------------
