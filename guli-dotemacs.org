@@ -69,7 +69,7 @@ after adding these for the first time.
 #+begin_src emacs-lisp
 (setq-default initial-scratch-message
               (concat ";; Happy hacking " (or user-login-name "") "!\n\n"
-                      ";; 积极主动；以终为始；要事第一；\n;; 双赢思维；知彼知己；综合综效。\n"
+                      ";; 自立 - 积极主动；以终为始；要事第一；\n;; 互赖 - 双赢思维；知彼知己；综合综效。\n"
                       ";; 重视自己的影响圈而不是关注圈。\n\n"
                       ";; 士不可以不弘毅，任重而道远。\n"
                       ";; 弘，宽广也。毅，强忍也。非弘不能胜其重，非毅无以致其远。\n"
@@ -824,6 +824,11 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
   ;; (enable-visual-studio-bookmarks)
 #+end_src
 
+** Protobuf
+#+begin_src emacs-lisp
+(autoload 'protobuf-mode "protobuf-mode" "Major mode for editing protobuf defitinion." t)
+(add-to-list 'auto-mode-alist '("\\.proto$" . protobuf-mode))
+#+end_src
 * Font and face
 ** Font lock
 #+begin_src emacs-lisp
@@ -1075,18 +1080,18 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 (setq org-capture-templates
       '(
         ;; todo list, GTD
-        ("t" "Todo (work)" entry (file+datetree "~/private/org/todo/todo-work.org")  "* TODO %^{topic} :work:%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
-        ("p" "Todo (Personal)" entry (file+datetree "~/private/org/todo/todo-personal.org")  "* TODO %^{topic} :personal:%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
+        ("t" "Todo (work)" entry (file+datetree "~/private/org/todo/todo-work.org")  "* TODO %^{topic}%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
+        ("p" "Todo (Personal)" entry (file+datetree "~/private/org/todo/todo-personal.org")  "* TODO %^{topic}%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
 
         ;; Reviews and Journanl
         ("r" "Daily Review" entry (file+datetree "~/private/org/notes/review.org") "Daily Report :review:"
          "* daily review %U :Daily: \n%[~/.emacs.d/conf/org/dailyreport.txt]\n"  :prepend t :empty-lines 1)
         ("j" "Journal" entry (file+datetree "~/private/org/notes/journal.org")  "* %U - %^{Title} :journal:\n %?" :empty-lines 1)
-        ("l" "Log Time" entry (file+datetree "~/private/org/notes/timelog.org")  "* %U - %^{Title} :time:\n%?")
+        ("l" "Log Time" entry (file+datetree "~/private/org/notes/timelog.org")  "* %U - %^{Title}\n%?")
 
         ;; notes for study, management, ideas
         ("n" "Notes" entry (file+headline "~/private/org/notes/notes.org" "Notes")  "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
-        ("m" "Management" entry (file+headline "~/private/org/notes/notes.management.org" "Management")  "* %^{topic} %u :manage:%^g\n%?\n" :prepend t :empty-lines 1)
+        ("m" "Management" entry (file+headline "~/private/org/notes/notes.management.org" "Management")  "* %^{topic} %u%^g\n%?\n" :prepend t :empty-lines 1)
         ))
 #+end_src
 

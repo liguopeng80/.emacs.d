@@ -14,13 +14,15 @@
  grep-scroll-output t
  indent-tabs-mode nil
  line-spacing 0.2
- mouse-yank-at-point t
  set-mark-command-repeat-pop t
  tooltip-delay 1.5
  truncate-lines nil
  truncate-partial-width-windows nil
  ;; no annoying beep on errors
  visible-bell t)
+
+(when window-system
+  (setq-default mouse-yank-at-point t))
 
 (global-auto-revert-mode)
 (setq global-auto-revert-non-file-buffers t
