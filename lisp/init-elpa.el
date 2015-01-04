@@ -122,7 +122,7 @@ ARCHIVE is the string name of the package archive.")
     mic-paren
     session
     crontab-mode
-    bookmark+
+    ;; bookmark+
     flymake-lua
     multi-term
     dired+
@@ -250,7 +250,8 @@ ARCHIVE is the string name of the package archive.")
 ;; rvm-open-gem to get gem's code
 (require-package 'rvm)
 ;; C-x r l to list bookmarks
-(require-package 'bookmark+)
+;;; delete by guli because of hotkey confliction
+;; (require-package 'bookmark+)
 (require-package 'multi-term)
 (require-package 'json-mode)
 (if (and (>= emacs-major-version 24) (>= emacs-minor-version 1))

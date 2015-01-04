@@ -55,7 +55,7 @@
 ;;----------------------------------------------------------------------------
 ;; Show matching parens
 ;;----------------------------------------------------------------------------
-(paren-activate)     ; activating mic-paren
+;; (paren-activate)     ; activating mic-paren
 
 ;;----------------------------------------------------------------------------
 ;; Fix per-window memory of buffer point positions

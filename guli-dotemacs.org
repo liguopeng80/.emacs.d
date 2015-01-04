@@ -648,10 +648,12 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+begin_src emacs-lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; python mode
+(setq ropemacs-global-prefix nil)
+
 (load-file "~/.emacs.d/emacs-for-python/epy-init.el")
 
-;; (require 'pymacs)
-;; (pymacs-load "ropemacs" "rope-")
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
 
 ;; If you want to enable them manually
 ;; (add-to-list 'load-path "~/.emacs.d/emacs-for-python/")
