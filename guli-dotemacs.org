@@ -1082,8 +1082,8 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 (setq org-capture-templates
       '(
         ;; todo list, GTD
-        ("t" "Todo (work)" entry (file+datetree "~/private/org/todo/todo-work.org")  "* TODO %^{topic}%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
-        ("p" "Todo (Personal)" entry (file+datetree "~/private/org/todo/todo-personal.org")  "* TODO %^{topic}%^g\nAdded: %U\n\n%?\n" :empty-lines 1)
+        ("t" "Todo (work)" entry (file+datetree "~/private/org/todo/todo-work.org")  "* TODO %^{topic} %^g\nAdded: %U\n\n%?\n" :empty-lines 1)
+        ("p" "Todo (Personal)" entry (file+datetree "~/private/org/todo/todo-personal.org")  "* TODO %^{topic} %^g\nAdded: %U\n\n%?\n" :empty-lines 1)
 
         ;; Reviews and Journanl
         ("r" "Daily Review" entry (file+datetree "~/private/org/notes/review.org") "Daily Report :review:"
