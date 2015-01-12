@@ -840,19 +840,28 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 
 ** Chinese
 #+begin_src emacs-lisp
-  ;; (set-default-font "DejaVu Sans Mono")
-  (when *win32*
+;; (set-default-font "DejaVu Sans Mono")
+(when *win32*
   ;;  (set-frame-font "Symbol-12")
-    (set-fontset-font (frame-parameter nil 'font)
-                      'han '("WenQuanYi Micro Hei" . "ISO10646-1"))
-    (set-fontset-font (frame-parameter nil 'font)
-                      'symbol '("WenQuanYi Micro Hei" . "ISO10646-1"))
-    (set-fontset-font (frame-parameter nil 'font)
-                      'cjk-misc '("WenQuanYi Micro Hei" . "ISO10646-1"))
-    (set-fontset-font (frame-parameter nil 'font)
-                      'bopomofo '("WenQuanYi Micro Hei" . "ISO10646-1")))
-#+end_src
+  (set-face-attribute 'default nil :font "Consolas 10")
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Microsoft Yahei" :size 18)))
+  (setq face-font-rescale-alist '(("Microsoft Yahei" . 1.8) ("WenQuanYi Micro Hei" . 1.8)))
+    ; (set-fontset-font (frame-parameter nil 'font) 'han '("WenQuanYi Micro Hei" . "ISO10646-1"))
+  ;(set-fontset-font (frame-parameter nil 'font) 'symbol '("WenQuanYi Micro Hei" . "ISO10646-1"))
+  ;(set-fontset-font (frame-parameter nil 'font) 'cjk-misc '("WenQuanYi Micro Hei" . "ISO10646-1"))
+  ;(set-fontset-font (frame-parameter nil 'font) 'bopomofo '("WenQuanYi Micro Hei" . "ISO10646-1"))
+  )
 
+;;; 这是一个中文字符串，用于中文字体的等宽测试
+;;; a chinese string for monospace testing....
+#+end_src
+   ;;; 这是一个中文字符串，用于中文字体的等宽测试
+   ;;; a chinese string for monospace testing....
+   
+   - 零一二三四五六七八九.零一二三四五六七八九.零一二三四五六七八九
+   - 00112233445566778899.00112233445566778899.00112233445566778899
+     
 * Session and desktop
 ** Session
 #+begin_src emacs-lisp
