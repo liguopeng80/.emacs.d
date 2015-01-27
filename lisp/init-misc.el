@@ -24,9 +24,9 @@
 (when window-system
   (setq-default mouse-yank-at-point t))
 
-(global-auto-revert-mode)
-(setq global-auto-revert-non-file-buffers t
-      auto-revert-verbose nil)
+;;; don't enable auto revert
+;; (global-auto-revert-mode)
+;; (setq global-auto-revert-non-file-buffers t auto-revert-verbose nil)
 
 ;; @see http://www.quora.com/Whats-the-best-way-to-edit-remote-files-from-Emacs
 (setq tramp-default-method "ssh")
