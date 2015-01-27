@@ -490,6 +490,10 @@ brew install aspell
   (global-set-key (kbd "RET") 'newline-and-indent)
 #+end_src
 
+** Keyboard Macro
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\C-xe" 'kmacro-end-and-call-macro)
+#+END_SRC
 * Navigation
 ** Cursor
 #+begin_src emacs-lisp
@@ -670,8 +674,8 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 
 (load-file "~/.emacs.d/emacs-for-python/epy-init.el")
 
-;; (require 'pymacs)
-;; (pymacs-load "ropemacs" "rope-")
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
 
 ;; If you want to enable them manually
 ;; (add-to-list 'load-path "~/.emacs.d/emacs-for-python/")
@@ -683,156 +687,10 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 ;; (require 'epy-nose)       ;; For nose integration
 #+END_SRC
 
-** C and C++
-#+begin_src emacs-lisp
-  ;; using c++-mode on .h files
-  (setq auto-mode-alist (cons '("\\.hpp$" . c++-mode) auto-mode-alist))
-
-  ;; ;; load c++ config file (c++ snipe)
-  ;; (load-file (concat lgp-path-my-config "cpp/config.el"))
-
-  ;; (autoload 'gtags-mode "gtags" "" t)
-
-  (defun my-c++-mode-hook()
-    ;; forward by work
-    (local-set-key [(meta f)] 'c-forward-into-nomenclature)
-    (local-set-key [(meta b)] 'c-backward-into-nomenclature)
-
-    (setq tab-width 4 indent-tabs-mode nil)
-    (local-set-key (kbd "^M") 'newline-and-indent)
-    (c-set-style lgp-default-c++-style)
-    ;; (define-key c-mode-base-map [(control shift`)] 'c-indent-command)
-
-    ;; using hs-minor-mode
-    (hs-minor-mode)
-    (define-key c-mode-base-map [(control \\)] 'hs-toggle-hiding)
-    (define-key c-mode-base-map [(meta \\)] 'hs-show-block)
-    
-    ;; using company-mode
-    ;; (company-mode t)
-
-    ;; abbrev mode
-    (setq abbrev-mode t)
-
-    ;; cedet
-    ;; (ede-minor-mode t) 
-
-    ;; (gtags-mode)
-
-    ;; (semantic-load-enable-gaudy-code-helpers)
-    ;; (semantic-load-enable-code-helpers)
-    ;; (semantic-load-enable-minimum-features)
-
-    ;; (define-key c-mode-base-map [(tab)] 'guli/indent-or-complete)
-    ;; (local-set-key [(control return)] 'semantic-complete-analyze-inline)
-    ;; (define-key c-mode-base-map [(meta ?/)] 'semantic-ia-complete-symbol-menu)
-    ;; (local-set-key (kbd "M-/") 'semantic-complete-analyze-inline)
-    ;; (local-set-key "." 'semantic-complete-self-insert)
-    ;; (local-set-key ">" 'semantic-complete-self-insert) 
-    
-    ;; (c-toggle-auto-newline t) 
-    ;; (c-hungry-delete-forward)
-    (c-toggle-hungry-state t)
-    )
-
-  (add-hook 'c++-mode-hook 'my-c++-mode-hook) 
-  (add-hook 'c-mode-common-hook 'my-c++-mode-hook)
-#+end_src
-
-*** cscope
-#+begin_src emacs-lisp
-(require 'xcscope)
-
-(if *win32*
-    (setq cscope-program "c:/bin/cygwin32/local/bin/cscope")
-   (if *is-a-mac*
-       (setq cscope-program "/usr/local/Cellar/cscope/15.8a/bin/cscope")
-     (setq cscope-program "/usr/local/bin/cscope")))
-
-(define-key global-map [(control f3)]  'cscope-set-initial-directory)
-(define-key global-map [(control meta f4)]  'lgp-switch-cscope-update-db-status)
-(define-key global-map [(control f5)]  'cscope-find-this-symbol)
-(define-key global-map [(control f6)]  'cscope-find-global-definition)
-(define-key global-map [(control f7)]  'cscope-find-global-definition-no-prompting)
-(define-key global-map [(control f8)]  'cscope-pop-mark)
-(define-key global-map [(control f9)]  'cscope-next-symbol)
-(define-key global-map [(control f10)] 'cscope-prev-symbol)
-(define-key global-map [(control f11)] 'cscope-next-file)
-(define-key global-map [(control f12)] 'cscope-prev-file)
-(define-key global-map [(meta f9)]     'cscope-display-buffer)
-(define-key global-map [(meta f10)]    'cscope-display-buffer-toggle)
-
-(defun lgp-switch-cscope-update-db-status()
-  (interactive)
-  (if cscope-do-not-update-database
-      (setq cscope-do-not-update-database nil)
-    (setq cscope-do-not-update-database t)))
-
-;; NOT update database automatically
-(setq cscope-do-not-update-database t)
-#+end_src
-
-*** Doxygen
-#+begin_src emacs-lisp
-  ;; ;; doxymacs configure
-  (require 'doxymacs)
-  (add-hook 'c-mode-common-hook 'doxymacs-mode)
-
-  (defun my-doxymacs-font-lock-hook ()
-    (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode))
-        (doxymacs-font-lock)))
-
-  ;; (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
-#+end_src
-
-*** Coding style
-#+begin_src emacs-lisp
-  ;; default C\C++ coding style 
-  ;; (setq c-default-style '((c-mode . "stroustrup")))
-  ;; (setq lgp-default-c++-style "symbian")
-  (setq lgp-default-c++-style "stroustrup")
-
-  ;; (require 'symbian-c++-mode)
-#+end_src
-
-*** Company mode
-#+begin_src emacs-lisp
-  (require 'cc-mode)
-
-  ;; (require 'company-mode)
-  ;; (require 'company-bundled-completions)
-  ;; (company-install-bundled-completions-rules)
-#+end_src
-
-** Erlang
-#+begin_src emacs-lisp
-  ;; (require 'erlang)
-  ;; (setq auto-mode-alist (cons '("\\.erl$" . erlang-mode) auto-mode-alist))
-
-  ;; (setq load-path (cons  "/usr/lib/erlang/lib/tools-2.6.13/emacs" load-path))
-  ;; (setq erlang-root-dir "/usr/lib/erlang/")
-  ;; (setq exec-path (cons "/usr/lib/erlang/bin" exec-path))
-
-  ;; (require 'erlang-start)
-#+end_src
-
-** Git
-   TODO: install git-emacs. 
+#+begin_src language
    
-#+begin_src emacs-lisp
-  (require 'git-emacs)
 #+end_src
-  
-** Visual studio plugin
-#+begin_src emacs-lisp
-  ;; (enable-visual-studio-bookmarks)
-#+end_src
-
-** Protobuf
-#+begin_src emacs-lisp
-(autoload 'protobuf-mode "protobuf-mode" "Major mode for editing protobuf defitinion." t)
-(add-to-list 'auto-mode-alist '("\\.proto$" . protobuf-mode))
-#+end_src
+    
 * Font and face
 ** Font lock
 #+begin_src emacs-lisp
@@ -1441,12 +1299,15 @@ And ace-jump-zap...
 
 * Path and ENV
 #+begin_src emacs-lisp
-  (setenv "PATH" (concat "\"c:/program files/postgresql/9.3/bin;\"" (getenv "PATH")))
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(setenv "PATH" (concat "\"c:/program files/postgresql/9.3/bin;\"" (getenv "PATH")))
 
-  (if (equal system-type `darwin)    
-      (setenv "PATH" (concat (getenv "PATH")
-                             ":/usr/local/Cellar/cscope/15.8a/bin")))
+(if *win32*
+    (setenv "PATH" (concat "/bin;/usr/local/bin;/usr/sbin;c:/bin/cygwin64/bin;" (getenv "PATH")))
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin")))
+
+(if (equal system-type `darwin)
+    (setenv "PATH" (concat (getenv "PATH")
+                           ":/usr/local/Cellar/cscope/15.8a/bin")))
 
 #+end_src
   
