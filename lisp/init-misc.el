@@ -202,23 +202,6 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
-;; Write backup files to own directory
-(if (not (file-exists-p (expand-file-name "~/.emacs.d/.backups")))
-    (make-directory (expand-file-name "~/.emacs.d/.backups"))
-    )
-(setq
-  backup-by-coping t ; don't clobber symlinks
-  backup-directory-alist '(("." . "~/.emacs.d/.backups"))
-  delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t  ;use versioned backups
-  )
-
-;; Donot make backups of files, not safe
-;; @see https://github.com/joedicastro/dotfiles/tree/master/emacs
-(setq vc-make-backup-files nil)
-
 ;; Don't disable narrowing commands
 (put 'narrow-to-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)

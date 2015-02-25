@@ -86,7 +86,13 @@ code stashes them all in =~/.emacs.d/backups=, where I can find them with =C-x
 C-f= (=find-file=) if I really need to.
 
 #+begin_src emacs-lisp
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(if (not (file-exists-p (expand-file-name "~/.emacs.d/backups")))
+    (make-directory (expand-file-name "~/.emacs.d/backups"))
+    )
+(setq
+ backup-by-coping t
+ backup-directory-alist '(("." . "~/.emacs.d/backups"))
+ )
 #+end_src
 
 Disk space is cheap. Save lots.
@@ -98,13 +104,13 @@ Disk space is cheap. Save lots.
   (setq kept-old-versions 2)
 
   (setq vc-make-backup-files t)
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/backups" t)))
 
   (setq make-backup-files t)
 #+end_src
 
 ** History
-    From http://www.wisdomandwonder.com/wordpress/wp-content/uploads/2014/03/C3F.html
+    From [[http://www.wisdomandwonder.com/wordpress/wp-content/uploads/2014/03/C3F.html]]
 #+begin_src emacs-lisp
   (setq savehist-file "~/.emacs.d/savehist")
   (savehist-mode 1)
@@ -691,6 +697,11 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
    
 #+end_src
     
+** Thrift
+#+BEGIN_SRC emacs-lisp
+(require 'thrift-mode)
+(add-to-list 'auto-mode-alist '("\\.thrift$" . thrift-mode))
+#+END_SRC
 * Font and face
 ** Font lock
 #+begin_src emacs-lisp
