@@ -1,6 +1,10 @@
 (when *is-a-mac*
-  (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'none)
+  ;; change COMMAND to META
+  ; (setq mac-command-modifier 'meta)
+  ;; disable OPTION
+  ; (setq mac-option-modifier 'none)
+  (setq mac-option-modifier 'meta)
+
   (setq default-input-method "MacOSX")
   ;; Make mouse wheel / trackpad scrolling less jerky
   (setq mouse-wheel-scroll-amount '(0.001))
