@@ -172,9 +172,10 @@ Disk space is cheap. Save lots.
       (indent-for-tab-command))
     )
 
-  (setq default-tab-width 4)
+  (setq tab-width 4)
   (setq indent-tabs-mode nil)
   (setq-default indent-tabs-mode nil)
+  (setq thrift-indent-level 4)
 
   ;; not supported by on emacs 23
   (setq-default line-spacing 2)
