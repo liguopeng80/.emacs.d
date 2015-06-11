@@ -1328,6 +1328,25 @@ And ace-jump-zap...
 - [[https://github.com/magnars/.emacs.d][Magnar Sveen]]: http://whattheemacsd.com/ has some explanations. [[http://sachachua.com/blog/2013/11/emacs-chat-magnar-sveen-emacs-rocks/][Emacs Chat (~1h)]]
 - [[https://github.com/jwiegley/dot-emacs][John Wiegley]]: Also see his [[http://www.youtube.com/watch?v=RvPFZL6NJNQ][Emacs Lisp Development talk]] (sorry, sucky video) and [[http://www.youtube.com/watch?v=ytNsHmRLZGM][Emacs Chat video]]
 
+* cscope
+#+begin_src emacs-lisp
+(require 'xcscope)
+(setq cscope-do-not-update-database t)
+
+(define-key global-map [(control f3)]  'cscope-set-initial-directory)
+(define-key global-map [(control f4)]  'cscope-unset-initial-directory)
+(define-key global-map [(control f5)]  'cscope-find-this-symbol)
+(define-key global-map [(control f6)]  'cscope-find-global-definition)
+(define-key global-map [(control f7)]  'cscope-find-global-definition-no-prompting)
+(define-key global-map [(control f8)]  'cscope-pop-mark)
+(define-key global-map [(control f9)]  'cscope-history-forward-line)
+(define-key global-map [(control f10)] 'cscope-history-forward-file)
+(define-key global-map [(control f11)] 'cscope-history-backward-line)
+(define-key global-map [(control f12)] 'cscope-history-backward-file)
+(define-key global-map [(meta f9)]  'cscope-display-buffer)
+(define-key global-map [(meta f10)] 'cscope-display-buffer-toggle)
+#+end_src
+
 * Path and ENV
 #+begin_src emacs-lisp
 (setenv "PATH" (concat "\"c:/program files/postgresql/9.3/bin;\"" (getenv "PATH")))
