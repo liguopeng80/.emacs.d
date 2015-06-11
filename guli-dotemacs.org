@@ -974,8 +974,12 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
         ("l" "Log Time" entry (file+datetree "~/private/org/notes/timelog.org")  "* %U - %^{Title}\n%?")
 
         ;; notes for study, management, ideas
-        ("n" "Notes" entry (file+headline "~/private/org/notes/notes.org" "Notes")  "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
-        ("m" "Management" entry (file+headline "~/private/org/notes/notes.management.org" "Management")  "* %^{topic} %u%^g\n%?\n" :prepend t :empty-lines 1)
+        ("n" "Notes" entry
+         (file+headline "~/private/org/notes/notes.org" "Notes")
+         "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
+        ("m" "Management" entry
+         (file+headline "~/private/org/notes/notes.management.org" "Management")
+         "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
 
         ;; finance
         ("f" "Finance" entry (file+headline "~/private/org/notes/finance.org" "Finance")  "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
