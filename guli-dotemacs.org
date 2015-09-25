@@ -978,6 +978,9 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
         ("n" "Notes" entry
          (file+headline "~/private/org/notes/notes.org" "Notes")
          "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
+        ("w" "Works" entry
+         (file+headline "~/private/org/notes/works.org" "Works")
+         "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
         ("m" "Management" entry
          (file+headline "~/private/org/notes/notes.management.org" "Management")
          "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
