@@ -29,7 +29,8 @@
            "Match in a case-insensitive way."
            (let ((case-fold-search t))
              ad-do-it))
-(add-hook 'text-mode-hook 'turn-on-artbollocks-mode)
-(add-hook 'org-mode-hook 'turn-on-artbollocks-mode)
+
+;; (add-hook 'text-mode-hook 'turn-on-artbollocks-mode)
+;; (add-hook 'org-mode-hook 'turn-on-artbollocks-mode)
 
 (provide 'init-artbollocks-mode)
