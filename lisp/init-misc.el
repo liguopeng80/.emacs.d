@@ -138,7 +138,8 @@
              ;; eldoc, show API doc in minibuffer echo area
              (turn-on-eldoc-mode)
              ;; show trailing spaces in a programming mod
-             (setq show-trailing-whitespace t)))
+             ;; liguopeng: don't show trailing whitespaces
+             (setq show-trailing-whitespace nil)))
 
 ;; turns on auto-fill-mode, don't use text-mode-hook because for some
 ;; mode (org-mode for example), this will make the exported document
