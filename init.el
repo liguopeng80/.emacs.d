@@ -53,6 +53,7 @@
       (require 'setup-cygwin)
       ;; better to set HOME env in GUI
       ;; (setenv "HOME" "c:/cygwin/home/someuser")
+      (message "setup-cygwin finished")
       )
   (error
    (message "setup-cygwin failed, continue anyway")
@@ -111,7 +112,7 @@
 (require 'init-which-func)
 (require 'init-move-window-buffer)
 ;; (require 'init-gist)
-(require 'init-moz)
+;; (require 'init-moz) ;; liguopeng: disable moz
 (require 'init-gtags)
 ;; use evil mode (vi key binding)
 ;;(require 'init-evil)

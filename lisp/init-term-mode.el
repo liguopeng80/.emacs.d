@@ -26,7 +26,9 @@
 (ad-activate 'term-sentinel)
 
 ;; always use bash
-(defvar my-term-shell "/bin/bash")
+(if *win32*
+    (defvar my-term-shell "c:/cygwin/bin/bash")
+  (defvar my-term-shell "/bin/bash"))
 (defadvice ansi-term (before force-bash)
   (interactive (list my-term-shell)))
 (ad-activate 'ansi-term)
@@ -67,7 +69,8 @@
   (interactive)
   (term-send-raw-string "\C-k"))
 
-(setq multi-term-program "/bin/bash")
+;; (setq multi-term-program "/bin/bash")
+(setq multi-term-program my-term-shell)
 (setq term-unbind-key-list '("C-x" "<ESC>"))
 (setq term-bind-key-alist
       '(("C-c" . term-interrupt-subjob)

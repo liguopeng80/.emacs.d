@@ -703,6 +703,15 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 (require 'thrift-mode)
 (add-to-list 'auto-mode-alist '("\\.thrift$" . thrift-mode))
 #+END_SRC
+** Objective-C
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'magic-mode-alist
+             `(,(lambda ()
+                  (and (string= (file-name-extension buffer-file-name) "h")
+                       (re-search-forward "@\\<interface\\>" 
+                                          magic-mode-regexp-match-limit t)))
+               . objc-mode))
+#+END_SRC
 * Font and face
 ** Font lock
 #+begin_src emacs-lisp
@@ -1172,11 +1181,11 @@ unwanted space when exporting org-mode to html."
 (defun cygwin-shell ()
   "Run cygwin bash in shell mode."
   (interactive)
-  (let ((explicit-shell-file-name "C:/bin/cygwin64/bin/bash"))
+  (let ((explicit-shell-file-name "C:/cygwin/bin/bash"))
     (call-interactively 'shell)))
 
 (when *win32*
-  (setq explicit-shell-file-name "C:/bin/cygwin64/bin/bash")
+  (setq explicit-shell-file-name "C:/cygwin/bin/bash")
   (setq explicit-sh-args '("-login" "-i"))
   )
 #+end_src
@@ -1354,18 +1363,24 @@ And ace-jump-zap...
 (define-key global-map [(meta f10)] 'cscope-display-buffer-toggle)
 #+end_src
 
+* doxygen
+#+begin_src emacs-lisp
+(require 'doxymacs)
+(add-hook 'c-mode-common-hook 'doxymacs-mode)
+#+end_src
 * Path and ENV
 #+begin_src emacs-lisp
 (setenv "PATH" (concat "\"c:/program files/postgresql/9.3/bin;\"" (getenv "PATH")))
 
 (if *win32*
-    (setenv "PATH" (concat "/bin;/usr/local/bin;/usr/sbin;c:/bin/cygwin64/bin;" (getenv "PATH")))
+    (progn
+      (setenv "PATH" (concat "c:/cygwin/bin;" (getenv "PATH")))
+      (setenv "SHELL" "c:/cygwin/bin/bash"))
   (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin")))
 
 (if (equal system-type `darwin)
     (setenv "PATH" (concat (getenv "PATH")
                            ":/usr/local/Cellar/cscope/15.8a/bin")))
-
 #+end_src
   
 * Bug fix 
