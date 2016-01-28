@@ -10,8 +10,7 @@
     (define-key map "\e[1;5D" [C-left])
     (define-key map "\e[5A"   [C-up])
     (define-key map "\e[5B"   [C-down])
-    (define-key map "\e[5C"   [C-right])
-    (define-key map "\e[5D"   [C-left])))
+    (define-key map "\e[5C"   [C-right])))
 
 (add-hook 'after-make-console-frame-hooks
           (lambda ()

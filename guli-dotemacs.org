@@ -977,9 +977,12 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
         ("t" "Todo (work)" entry (file+datetree "~/private/org/todo/todo-work.org")  "* TODO %^{topic} %^g\nAdded: %U\n\n%?\n" :empty-lines 1)
         ("p" "Todo (Personal)" entry (file+datetree "~/private/org/todo/todo-personal.org")  "* TODO %^{topic} %^g\nAdded: %U\n\n%?\n" :empty-lines 1)
 
+        ("s" "slim goal review" entry (file+datetree "~/private/org/notes/todo-work.org") "Sprint Goal Review :slim:"
+         "* sprint goal review %U :sprint: \n%[~/private/org/templates/sprint-goals.org]\n"  :prepend t :empty-lines 1)
+
         ;; Reviews and Journanl
         ("r" "Daily Review" entry (file+datetree "~/private/org/notes/review.org") "Daily Report :review:"
-         "* daily review %U :Daily: \n%[~/.emacs.d/conf/org/dailyreport.txt]\n"  :prepend t :empty-lines 1)
+         "* daily review %U :Daily: \n%[~/private/org/templates/dailyreport.txt]\n"  :prepend t :empty-lines 1)
         ("j" "Journal" entry (file+datetree "~/private/org/notes/journal.org")  "* %U - %^{Title} :journal:\n %?" :empty-lines 1)
         ("l" "Log Time" entry (file+datetree "~/private/org/notes/timelog.org")  "* %U - %^{Title}\n%?")
 

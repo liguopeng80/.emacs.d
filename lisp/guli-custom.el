@@ -3,12 +3,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(bmkp-last-as-first-bookmark-file "~/.bookmarks.el")
  '(org-priority-faces
    (quote
     ((65 . "DeepPink")
      (66 . "firebrick")
      (67 . "white"))))
- '(quack-tabs-are-evil-p nil)
  '(safe-local-variable-values
    (quote
     ((eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook"
