@@ -77,6 +77,11 @@ after adding these for the first time.
                       ))
 #+end_src
 
+*** Debug 
+#+begin_src emacs-lisp 
+(setq debug-on-error t)
+#+end_src
+
 * General configuration
 ** Backups
 This is one of the things people usually want to change right away. By
@@ -547,7 +552,6 @@ brew install aspell
                 ("C-c <down>" . windmove-down)))
 #+end_src
 
-
 ** Make window splitting more useful
 
 Copied from http://www.reddit.com/r/emacs/comments/25v0eo/you_emacs_tips_and_tricks/chldury
@@ -697,7 +701,7 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+begin_src language
    
 #+end_src
-    
+
 ** Thrift
 #+BEGIN_SRC emacs-lisp
 (require 'thrift-mode)
@@ -822,6 +826,15 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 * Org
 ** Init orgmode
 #+begin_src emacs-lisp
+; (eval-after-load "org" '(require 'ox-html nil t))
+; (add-to-list 'load-path "~/.emacs.d/elpa/org-20160125")
+
+;; Install the latest org package
+;; M-x package-install org
+;;
+;; Then modify function org-html-final-function in ox-html.el:
+;; ;; (set-auto-mode t)
+;; (html-mode)
 (require 'org-install)
 
 ;(setq org-fontify-done-headline t)
@@ -960,7 +973,6 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
          :base-directory "~/private/org/html/img"
          :base-extension "jpg|png|gif")
         ))
-
 #+end_src
 
 ** Capture
