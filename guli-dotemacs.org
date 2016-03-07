@@ -716,6 +716,10 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
                                           magic-mode-regexp-match-limit t)))
                . objc-mode))
 #+END_SRC
+** GN Mode
+#+begin_src emacs-lisp
+(require 'gn-mode)
+#+end_src
 * Font and face
 ** Font lock
 #+begin_src emacs-lisp
