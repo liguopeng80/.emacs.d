@@ -48,6 +48,22 @@ in a directory in my load-path=, Emacs can find them.
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 #+end_src
     
+*** Melpa
+
+#+begin_src  emacs-lisp :tangle no
+(require 'package)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
+(package-initialize)
+#+end_src
+
 *** EL-GET
 #+begin_src emacs-lisp :tangle no
   (unless (require 'el-get nil t)
@@ -60,6 +76,7 @@ in a directory in my load-path=, Emacs can find them.
   (require 'el-get)
 
   (setq el-get-user-package-directory "~/.emacs.d/lisp")
+  (el-get 'sync)
 #+end_src
 
 Use =M-x package-refresh-contents= to reload the list of packages
@@ -506,6 +523,21 @@ brew install aspell
 #+BEGIN_SRC emacs-lisp
 (global-set-key "\C-xe" 'kmacro-end-and-call-macro)
 #+END_SRC
+* Performacs
+#+begin_src emacs-lisp
+(if (>= emacs-major-version 25)
+    (remove-hook 'find-file-hooks 'vc-refresh-state)
+  (remove-hook 'find-file-hooks 'vc-find-file-hook))
+
+(setq garbage-collection-messages t)
+
+(setq gc-cons-threshold (* 511 1024 1024))
+(setq gc-cons-percentage 0.5)
+(setq garbage-collection-messages t)
+
+(run-with-idle-timer 5 t #'garbage-collect)
+#+END_SRC
+
 * Navigation
 ** Cursor
 #+begin_src emacs-lisp
@@ -630,7 +662,9 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 
 #+begin_src emacs-lisp
 (remove-hook 'text-mode-hook 'turn-on-auto-fill)
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+
+;; disable this to improve orgmode performance
+;; (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 #+end_src
  
 * Window and buffer
@@ -659,6 +693,13 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+end_src
 
 * Programming
+** lua
+#+BEGIN_SRC emacs-lisp
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+#+END_SRC
+
 ** Python
 *** Python Indent
 #+begin_src emacs-lisp
@@ -720,6 +761,13 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+begin_src emacs-lisp
 (require 'gn-mode)
 #+end_src
+** neotree
+#+begin_src emacs-lisp
+;; (add-to-list 'load-path "/some/path/neotree")
+(require 'neotree)
+(global-set-key [f8] 'neotree-toggle)
+#+end_src
+
 * Font and face
 ** Font lock
 #+begin_src emacs-lisp
@@ -728,23 +776,45 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+end_src
 
 ** Chinese
-#+begin_src emacs-lisp
-;; (set-default-font "DejaVu Sans Mono")
+#+begin_src emacs-lisp :tangle no
 (when *win32*
-  ;;  (set-frame-font "Symbol-12")
-  (set-face-attribute 'default nil :font "Consolas 10")
+  (set-face-attribute 'default nil :font "Consolas 19")
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Microsoft Yahei" :size 18)))
-  (setq face-font-rescale-alist '(("Microsoft Yahei" . 1.8) ("WenQuanYi Micro Hei" . 1.8)))
-    ; (set-fontset-font (frame-parameter nil 'font) 'han '("WenQuanYi Micro Hei" . "ISO10646-1"))
-  ;(set-fontset-font (frame-parameter nil 'font) 'symbol '("WenQuanYi Micro Hei" . "ISO10646-1"))
-  ;(set-fontset-font (frame-parameter nil 'font) 'cjk-misc '("WenQuanYi Micro Hei" . "ISO10646-1"))
-  ;(set-fontset-font (frame-parameter nil 'font) 'bopomofo '("WenQuanYi Micro Hei" . "ISO10646-1"))
+    (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Microsoft Yahei" :size 42)))
   )
 
+(when *win32*
+  (set-face-attribute 'default nil :font "Consolas 15")
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Microsoft Yahei" :size 19)))
+    ;; (setq face-font-rescale-alist '(("Microsoft Yahei" . 1.2) ("WenQuanYi Micro Hei" . 1.2)))
+  )
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+;; (set-default-font "DejaVu Sans Mono")
+(when *win32*
+  (set-face-attribute 'default nil :font "Consolas 12")
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Microsoft Yahei" :size 22)))
+    (setq face-font-rescale-alist '(("微软雅黑" . 1.2) ("Microsoft Yahei" . 1.2) ("WenQuanYi Micro Hei" . 1.2)))
+  )
 ;;; 这是一个中文字符串，用于中文字体的等宽测试
 ;;; a chinese string for monospace testing....
 #+end_src
+
+#+begin_src emacs-lisp
+;; (set-default-font "DejaVu Sans Mono")
+(when *win32*
+  (set-face-attribute 'default nil :font "Consolas 12")
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Microsoft Yahei")))
+    (setq face-font-rescale-alist '(("微软雅黑" . 1.15) ("Microsoft Yahei" . 1.15) ("WenQuanYi Micro Hei" . 1.15)))
+  )
+;;; 这是一个中文字符串，用于中文字体的等宽测试
+;;; a chinese string for monospace testing....
+#+end_src
+
    ;;; 这是一个中文字符串，用于中文字体的等宽测试
    ;;; a chinese string for monospace testing....
    
@@ -897,13 +967,22 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
        #'(lambda nil (interactive) (org-todo "WAITING")))
      ))
 #+end_src
-** Task and agenda
+** Task and Agenda
 #+begin_src emacs-lisp
+;; imporve performance
+;; (setq org-enforce-todo-dependencies t)
+(setq org-agenda-inhibit-startup t)
+(setq org-agenda-dim-blocked-tasks nil)
+(setq org-agenda-use-tag-inheritance nil)
+;; (setq org-agenda-ignore-drawer-properties '(effort appt category))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
 (setq calendar-week-start-day 1)
 (setq org-clock-persist t)
 (org-clock-persistence-insinuate)
 
-(setq org-emphasis-alist (quote (("*" org-bold "<b>" "</b>")
+(setq org-emphasis-alist (quote (("*" '("*" (:foreground "#4FFF4F")) "<b>" "</b>")
                             ("/" italic "<i>" "</i>")
                             ("&" highlight "<font color=\"red\">" "</font>")
                             ("_" underline "<u>" "</u>")
@@ -943,7 +1022,7 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
           ; (tags-todo "URGENT")
           ; (tags "PROJECT-MAYBE-DONE")
           ))
-
+        
         ("H" "Home NA Lists"
          ( (agenda)
            (tags-todo "HOME")
@@ -1015,6 +1094,8 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 
         ;; finance
         ("f" "Finance" entry (file+headline "~/private/org/notes/finance.org" "Finance")  "* %^{topic} %u %^g\n%?\n" :prepend t :empty-lines 1)
+        ("b" "Bitcoin" entry (file+headline "~/private/org/notes/finance.org" "Finance")  
+         "* [/] bitcoin %u :record:\n%[~/private/org/templates/org.template.bitcoin.txt]\n" :prepend t :empty-lines 1)
         ))
 #+end_src
 
@@ -1064,8 +1145,7 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
         ))
 #+end_src
 
-** Font in agenda
-   
+** Font in Agenda
 #+begin_src emacs-lisp
 (custom-set-variables
  ;; here there is customization for other variables 
@@ -1108,31 +1188,30 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 (setq hebrew-holidays  nil)
 (setq islamic-holidays nil)
 
-(setq general-holidays
-      '((holiday-fixed 1 1 "元旦")
-        (holiday-fixed 2 14 "情人节")
-        (holiday-fixed 3 14 "白色情人节")
-        (holiday-fixed 4 1 "愚人节")
-        (holiday-fixed 5 1 "劳动节")
-        (holiday-float 5 0 2 "母亲节")
-        (holiday-fixed 6 1 "儿童节")
-        (holiday-float 6 0 3 "父亲节")
-        (holiday-fixed 7 1 "建党节")
-        (holiday-fixed 8 1 "建军节")
-        (holiday-fixed 9 10 "教师节")
-        (holiday-fixed 10 1 "国庆节")
-        (holiday-fixed 12 25 "圣诞节")))
+;; (setq general-holidays
+;;       '((holiday-fixed 1 1 "元旦")
+;;         (holiday-fixed 2 14 "情人节")
+;;         (holiday-fixed 3 14 "白色情人节")
+;;         (holiday-fixed 4 1 "愚人节")
+;;         (holiday-fixed 5 1 "劳动节")
+;;         (holiday-float 5 0 2 "母亲节")
+;;         (holiday-fixed 6 1 "儿童节")
+;;         (holiday-float 6 0 3 "父亲节")
+;;         (holiday-fixed 7 1 "建党节")
+;;         (holiday-fixed 8 1 "建军节")
+;;         (holiday-fixed 9 10 "教师节")
+;;         (holiday-fixed 10 1 "国庆节")
+;;         (holiday-fixed 12 25 "圣诞节")))
+
+(setq mark-holidays-in-calendar t)
+;; (setq calendar-holidays (append general-holidays local-holidays))
 
 (require 'cal-china-x)
-(setq mark-holidays-in-calendar t)
-
-(setq calendar-holidays
-       (append general-holidays local-holidays))
 (setq calendar-holidays cal-china-x-chinese-holidays)
 #+end_src
 
 ** Personal holidays
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (setq personal-holiday-file "~/private/org/todo/holidays.el")
 (if (file-exists-p personal-holiday-file)
     (progn
@@ -1200,18 +1279,18 @@ unwanted space when exporting org-mode to html."
 (defun cygwin-shell ()
   "Run cygwin bash in shell mode."
   (interactive)
-  (let ((explicit-shell-file-name "C:/cygwin/bin/bash"))
+  (let ((explicit-shell-file-name "C:/cygwin64/bin/bash"))
     (call-interactively 'shell)))
 
 (when *win32*
-  (setq explicit-shell-file-name "C:/cygwin/bin/bash")
+  (setq explicit-shell-file-name "C:/cygwin64/bin/bash")
   (setq explicit-sh-args '("-login" "-i"))
   )
 #+end_src
 
 ** Internet Relay Chat
    IRC is a great way to hang out with other Emacs geeks.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
      (use-package erc
        :ensure erc
        :config
@@ -1351,7 +1430,7 @@ And ace-jump-zap...
 ** Startup
    Show agenda is toooooo slow.... :-(
 #+begin_src emacs-lisp
-  ;; (add-hook 'after-init-hook (lambda () (org-agenda nil "a")))
+(add-hook 'after-init-hook (lambda () (org-agenda nil "a")))
 #+end_src
 
 * Other cool configs you may want to check out
@@ -1393,8 +1472,8 @@ And ace-jump-zap...
 
 (if *win32*
     (progn
-      (setenv "PATH" (concat "c:/cygwin/bin;" (getenv "PATH")))
-      (setenv "SHELL" "c:/cygwin/bin/bash"))
+      (setenv "PATH" (concat "c:/cygwin64/bin;" (getenv "PATH")))
+      (setenv "SHELL" "c:/cygwin64/bin/bash"))
   (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin")))
 
 (if (equal system-type `darwin)
@@ -1402,8 +1481,7 @@ And ace-jump-zap...
                            ":/usr/local/Cellar/cscope/15.8a/bin")))
 #+end_src
   
-* Bug fix 
-
+* Bug fix
 ** A strange bug on linux
    Cannot start "git-status" because scroll-bar and fringe is not loaded.
    

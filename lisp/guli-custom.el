@@ -3,12 +3,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(bmkp-last-as-first-bookmark-file "~/.bookmarks.el")
- '(org-priority-faces
+ '(package-selected-packages
    (quote
-    ((65 . "DeepPink")
-     (66 . "firebrick")
-     (67 . "white"))))
+    (solidity-mode yasnippet yaml-mode xcscope writeroom-mode wgrep w3m use-package unfill textile-mode tagedit switch-window string-edit sr-speedbar smartparens session scss-mode scratch sass-mode rvm robe rinari regex-tool rainbow-delimiters quack project-local-variables pretty-mode pomodoro pointback paredit page-break-lines org-fstree org mwe-log-commands multiple-cursors multi-term move-text mic-paren maxframe markdown-mode magit lua-mode less-css-mode legalese json-mode js2-mode iedit idomenu ibuffer-vc htmlize hl-sexp haskell-mode gitignore-mode gitconfig-mode git-timemachine git-gutter ggtags fringe-helper flyspell-lazy flymake-sass flymake-ruby flymake-python-pyflakes flymake-lua flymake-jslint flymake-css flymake-coffee fancy-narrow expand-region exec-path-from-shell erlang emmet-mode elnode dsvn dropdown-list dired-details dired+ csharp-mode crontab-mode cpputils-cmake company-c-headers company-anaconda color-theme coffee-mode buffer-move bbdb auto-compile ag ace-window ace-jump-zap)))
  '(safe-local-variable-values
    (quote
     ((eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook"
