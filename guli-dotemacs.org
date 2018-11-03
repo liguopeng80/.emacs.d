@@ -344,23 +344,22 @@ Disk space is cheap. Save lots.
 
 ** F-keys
 #+begin_src emacs-lisp
-  (global-set-key [f1]    'help)
-  (global-set-key [f2]    'org-insert-todo-heading)
-  (global-set-key [f6]    'shell)
-  (global-set-key [f7]    'text-mode)
-  (global-set-key [f8]    'outline-mode)
+(global-set-key [f1]    'help)
+(global-set-key [f2]    'org-insert-todo-heading)
+(global-set-key [f6]    'shell)
+(global-set-key [f7]    'text-mode)
+(global-set-key [f8]    'outline-mode)
 
-  (define-key global-map [(f5)] 'revert-buffer)
-  (global-set-key [f7] 'calendar)
-  (global-set-key [f8] 'other-window)
-  (global-set-key [f9] 'view-mode)
-  (global-set-key [f11] 'compile)
-  (global-set-key [f12] 'gdb)
-  (global-set-key (kbd "C-c C-o") 'occur)
+(define-key global-map [(f5)] 'revert-buffer)
+(global-set-key [f7] 'calendar)
+(global-set-key [f8] 'other-window)
+(global-set-key [f9] 'view-mode)
+(global-set-key [f11] 'compile)
+(global-set-key [f12] 'gdb)
+(global-set-key (kbd "C-c C-o") 'occur)
 
-  (global-set-key [(meta f12)] 'speedbar)
-  (global-set-key [(f1)] 'delete-other-windows)
-
+(global-set-key [(meta f12)] 'speedbar)
+(global-set-key [(f1)] 'delete-other-windows)
 #+end_src
 
 ** Template 
@@ -444,7 +443,7 @@ Disk space is cheap. Save lots.
 
 ** Comments
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region)
 #+end_src
 
 ** Undo tree mode - visualize your undos and branches
@@ -481,6 +480,7 @@ Disk space is cheap. Save lots.
 ** Customization from menu
 #+begin_src emacs-lisp
 (setq custom-file "~/.emacs.d/lisp/guli-custom.el") 
+(load custom-file)
 #+end_src
 
 ** Spell check
@@ -496,27 +496,27 @@ brew install aspell
 #+end_src
 ** Others
 #+begin_src emacs-lisp
-  (put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
 
-  (setq visible-bell nil)
-  (setq default-fill-column 78)
-  (setq inhibit-startup-message t)
-  (setq line-number-mode t)
-  (setq column-number-mode t)
+(setq visible-bell nil)
+(setq default-fill-column 78)
+(setq inhibit-startup-message t)
+(setq line-number-mode t)
+(setq column-number-mode t)
 
-  (setq kill-whole-line t)
+(setq kill-whole-line t)
 
-  (setq require-final-newline t)
+(setq require-final-newline t)
 
-  (setq default-major-mode 'text-mode)
+(setq default-major-mode 'text-mode)
 
-  (auto-image-file-mode)
+(auto-image-file-mode)
 
-  (mouse-avoidance-mode 'animate)
+(mouse-avoidance-mode 'animate)
 
-  (put 'upcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 
-  (global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "RET") 'newline-and-indent)
 #+end_src
 
 ** Keyboard Macro
@@ -541,26 +541,26 @@ brew install aspell
 * Navigation
 ** Cursor
 #+begin_src emacs-lisp
-  (defun guli/goto-char (n char)
-    "Move forward to Nth occurence of CHAR.
-  Typing `guli/goto-char-key' again will move forwad to the next Nth
-  occurence of CHAR."
-    
-    (interactive "p\ncGo to char: ")
-    (search-forward (string char) nil nil n)
-    (while (char-equal (read-char) char)
-      (search-forward (string char) nil nil n))
-    (setq unread-command-events (list last-input-event)))
+(defun guli/goto-char (n char)
+  "Move forward to Nth occurence of CHAR.
+Typing `guli/goto-char-key' again will move forwad to the next Nth
+occurence of CHAR."
+  
+  (interactive "p\ncGo to char: ")
+  (search-forward (string char) nil nil n)
+  (while (char-equal (read-char) char)
+    (search-forward (string char) nil nil n))
+  (setq unread-command-events (list last-input-event)))
 
-  (define-key global-map (kbd "C-z") 'guli/goto-char)
+(define-key global-map (kbd "C-z") 'guli/goto-char)
 #+end_src
 
 ** Pop to mark
    Handy way of getting back to previous places.
    
 #+begin_src emacs-lisp
-  (bind-key "C-x p" 'pop-to-mark-command)
-  (setq set-mark-command-repeat-pop t)
+(bind-key "C-x p" 'pop-to-mark-command)
+(setq set-mark-command-repeat-pop t)
 #+end_src
 
 ** Text size
@@ -670,26 +670,26 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 * Window and buffer
 ** Emacs windows
 #+begin_src emacs-lisp
-  (windmove-default-keybindings)
+(windmove-default-keybindings)
 
-  (require 'window-numbering)
-  (window-numbering-mode 1)
+(require 'window-numbering)
+(window-numbering-mode 1)
 #+end_src
 
 ** Emacs buffers
 #+begin_src emacs-lisp
-  (defun guli/kill-buffer-and-window()
-    (interactive)
-    (kill-buffer-and-window))
+(defun guli/kill-buffer-and-window()
+  (interactive)
+  (kill-buffer-and-window))
 
-  (defun guli/kill-buffer()
-    (interactive)
-    (ido-kill-buffer))
+(defun guli/kill-buffer()
+  (interactive)
+  (ido-kill-buffer))
 
-  (global-set-key [C-f4] 'guli/kill-buffer-and-window)
-  (global-set-key [C-f3] 'guli/kill-buffer)
+(global-set-key [C-f4] 'guli/kill-buffer-and-window)
+(global-set-key [C-f3] 'guli/kill-buffer)
 
-  ; (global-set-key [(control tab)] 'next-buffer)
+; (global-set-key [(control tab)] 'next-buffer)
 #+end_src
 
 * Programming
@@ -717,7 +717,6 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 (add-hook 'python-mode-hook
           '(lambda()
              (setq indent-tabs-mode nil)))
-
 #+end_src
 
 *** Pymacs
@@ -821,6 +820,20 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
    - 零一二三四五六七八九.零一二三四五六七八九.零一二三四五六七八九
    - 00112233445566778899.00112233445566778899.00112233445566778899
      
+** Custom
+#+begin_src emacs-lisp :tangle no
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(comint-highlight-prompt ((t (:foreground "light sky blue"))))
+ '(font-lock-comment-face ((t (:foreground "medium aquamarine" :slant italic))))
+ '(org-level-1 ((t (:foreground "forest green"))))
+ '(window-numbering-face ((t (:foreground "DeepPink" :underline "DeepPink" :weight bold))) t)
+)
+#+end_src
+
 * Session and desktop
 ** Session
 #+begin_src emacs-lisp
@@ -892,6 +905,10 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
   ;;  '(tabbar-unselected-face ((t (:inherit tabbar-default-face :foreground "#102e4e" :box (:line-width 2 :color "white" :style pressed-button))))))
 #+end_src
 
+* Treemacs
+#+BEGIN_SRC emacs-lisp :tangle no
+(define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action)
+#+END_SRC
 * Folding
 #+begin_src emacs-lisp
   (autoload 'folding-mode "folding" 
@@ -967,9 +984,24 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
        #'(lambda nil (interactive) (org-todo "WAITING")))
      ))
 #+end_src
-** Task and Agenda
+** Org-Agenda
 #+begin_src emacs-lisp
-;; imporve performance
+(require 'org-agenda)
+; (org-defkey org-agenda-mode-map "\C-m"     'org-agenda-switch-to)
+(org-defkey org-agenda-mode-map "\C-m"     'org-agenda-show)
+
+;; (org-defkey org-agenda-mode-map "\C-p"     
+;;             '(lambda ()
+;;               (org-agenda-previous-line)
+;;               (interactive)
+;;               (org-agenda-show)
+;;               ))
+#+end_src
+
+** Task and Agenda
+   Imporve Performance:
+
+#+begin_src emacs-lisp
 ;; (setq org-enforce-todo-dependencies t)
 (setq org-agenda-inhibit-startup t)
 (setq org-agenda-dim-blocked-tasks nil)
@@ -977,6 +1009,7 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 ;; (setq org-agenda-ignore-drawer-properties '(effort appt category))
 #+END_SRC
 
+   Calendar and task:
 #+BEGIN_SRC emacs-lisp
 (setq calendar-week-start-day 1)
 (setq org-clock-persist t)
@@ -1474,7 +1507,9 @@ And ace-jump-zap...
     (progn
       (setenv "PATH" (concat "c:/cygwin64/bin;" (getenv "PATH")))
       (setenv "SHELL" "c:/cygwin64/bin/bash"))
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin")))
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+  (setq shell-file-name "c:/cygwin64/bin/bash")
+)
 
 (if (equal system-type `darwin)
     (setenv "PATH" (concat (getenv "PATH")

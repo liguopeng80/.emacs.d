@@ -29,8 +29,8 @@
       org-completion-use-ido t
       org-edit-src-content-indentation 0
       org-edit-timestamp-down-means-later t
-      org-agenda-start-on-weekday nil
-      org-agenda-span 14
+      org-agenda-start-on-weekday 1
+      org-agenda-span 7
       ;; diary is very slow on emacs 25.1 (windows)
       ;; org-agenda-include-diary t
       org-agenda-window-setup 'current-window
