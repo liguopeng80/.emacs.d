@@ -92,6 +92,18 @@ after adding these for the first time.
                       ";; 弘，宽广也。毅，强忍也。非弘不能胜其重，非毅无以致其远。\n"
                       ";; 仁以为己任，不亦重乎？死而后已，不亦远乎？\n\n"
                       ))
+
+(setq-default initial-scratch-message
+              (concat ";; Happy hacking " (or user-login-name "") "!\n\n"
+              ";; 静中细思，古今亿百年无有穷期，人生其间数十寒暑，仅须臾耳，当思一搏；\n"
+              ";; 大地数万里，不可纪极，人于其中寝处游息，昼仅一室，夜仅一榻耳，当思珍惜；\n"
+              ";; 古人书籍，近人著述，浩如烟海，人生目光之所能及者，不过九牛一毛耳，当思多览；\n"
+              ";; 事变万端，美名百途，人生才力之所能及者，不过太仓之粒耳，当思奋争；\n"
+              ";; \n\n"
+              ";; 知天之长，而吾所历者短，则忧患横逆之来，当少忍以待其定；\n"
+              ";; 知地之大，而吾所居者小，则遇荣利争夺之境，当退让以守其雌；\n"
+              ";; \n\n"
+              ))
 #+end_src
 
 *** Debug 
@@ -793,10 +805,10 @@ From http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
 #+begin_src emacs-lisp :tangle no
 ;; (set-default-font "DejaVu Sans Mono")
 (when *win32*
-  (set-face-attribute 'default nil :font "Consolas 12")
+  (set-face-attribute 'default nil :font "Consolas 14")
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Microsoft Yahei" :size 22)))
-    (setq face-font-rescale-alist '(("微软雅黑" . 1.2) ("Microsoft Yahei" . 1.2) ("WenQuanYi Micro Hei" . 1.2)))
+    (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Microsoft Yahei")))
+    (setq face-font-rescale-alist '(("微软雅黑" . 1.1) ("Microsoft Yahei" . 1.1) ("WenQuanYi Micro Hei" . 1.1)))
   )
 ;;; 这是一个中文字符串，用于中文字体的等宽测试
 ;;; a chinese string for monospace testing....

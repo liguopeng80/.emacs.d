@@ -147,8 +147,11 @@
 
 ;; color theme
 (require 'color-theme)
+;; (color-theme-aalto-light)
+
 (require 'color-theme-molokai)
 (color-theme-molokai)
+
 ;; This line must be after color-theme-molokai! Don't know why.
 ;; (setq color-theme-illegal-faces "^\\(w3-\\|dropdown-\\|info-\\|linum\\|yas-\\|font-lock\\)")
 ;; (color-theme-select 'color-theme-xp)
